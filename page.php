@@ -1,38 +1,23 @@
-<?php
-/**
- * The template for displaying all pages
- *
- * This is the template that displays all pages by default.
- * Please note that this is the WordPress construct of pages
- * and that other 'pages' on your WordPress site may use a
- * different template.
- *
- * @link https://codex.wordpress.org/Template_Hierarchy
- *
- * @package WP_DSA_Cincy
- */
+<?php get_header(); ?>
+	
+	<div id="content">
 
-get_header(); ?>
+		<div id="inner-content" class="row">
+	
+		    <main id="main" class="large-8 medium-8 columns" role="main">
+				
+				<?php if (have_posts()) : while (have_posts()) : the_post(); ?>
 
-	<div id="primary" class="content-area">
-		<main id="main" class="site-main">
+			    	<?php get_template_part( 'parts/loop', 'page' ); ?>
+			    
+			    <?php endwhile; endif; ?>							
+			    					
+			</main> <!-- end #main -->
 
-			<?php
-			while ( have_posts() ) : the_post();
+		    <?php get_sidebar(); ?>
+		    
+		</div> <!-- end #inner-content -->
 
-				get_template_part( 'template-parts/content', 'page' );
+	</div> <!-- end #content -->
 
-				// If comments are open or we have at least one comment, load up the comment template.
-				if ( comments_open() || get_comments_number() ) :
-					comments_template();
-				endif;
-
-			endwhile; // End of the loop.
-			?>
-
-		</main><!-- #main -->
-	</div><!-- #primary -->
-
-<?php
-get_sidebar();
-get_footer();
+<?php get_footer(); ?>

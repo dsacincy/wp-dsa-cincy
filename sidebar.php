@@ -1,17 +1,17 @@
-<?php
-/**
- * The sidebar containing the main widget area
- *
- * @link https://developer.wordpress.org/themes/basics/template-files/#template-partials
- *
- * @package WP_DSA_Cincy
- */
+<div id="sidebar1" class="sidebar large-4 medium-4 columns" role="complementary">
 
-if ( ! is_active_sidebar( 'sidebar-1' ) ) {
-	return;
-}
-?>
+	<?php if ( is_active_sidebar( 'sidebar1' ) ) : ?>
 
-<aside id="secondary" class="widget-area">
-	<?php dynamic_sidebar( 'sidebar-1' ); ?>
-</aside><!-- #secondary -->
+		<?php dynamic_sidebar( 'sidebar1' ); ?>
+
+	<?php else : ?>
+
+	<!-- This content shows up if there are no widgets defined in the backend. -->
+						
+	<div class="alert help">
+		<p><?php _e( 'Please activate some Widgets.', 'jointswp' );  ?></p>
+	</div>
+
+	<?php endif; ?>
+
+</div>

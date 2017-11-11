@@ -1,155 +1,255 @@
 <?php
-/**
- * WP DSA Cincy functions and definitions
- *
- * @link https://developer.wordpress.org/themes/basics/theme-functions/
- *
- * @package WP_DSA_Cincy
- */
+// Theme support options
+require_once(get_template_directory().'/assets/functions/theme-support.php'); 
 
-if ( ! function_exists( 'wp_dsa_cincy_setup' ) ) :
-/**
- * Sets up theme defaults and registers support for various WordPress features.
- *
- * Note that this function is hooked into the after_setup_theme hook, which
- * runs before the init hook. The init hook is too late for some features, such
- * as indicating support for post thumbnails.
- */
-function wp_dsa_cincy_setup() {
-	/*
-	 * Make theme available for translation.
-	 * Translations can be filed in the /languages/ directory.
-	 * If you're building a theme based on WP DSA Cincy, use a find and replace
-	 * to change 'wp-dsa-cincy' to the name of your theme in all the template files.
-	 */
-	load_theme_textdomain( 'wp-dsa-cincy', get_template_directory() . '/languages' );
+// WP Head and other cleanup functions
+require_once(get_template_directory().'/assets/functions/cleanup.php'); 
 
-	// Add default posts and comments RSS feed links to head.
-	add_theme_support( 'automatic-feed-links' );
+// Register scripts and stylesheets
+require_once(get_template_directory().'/assets/functions/enqueue-scripts.php'); 
 
-	/*
-	 * Let WordPress manage the document title.
-	 * By adding theme support, we declare that this theme does not use a
-	 * hard-coded <title> tag in the document head, and expect WordPress to
-	 * provide it for us.
-	 */
-	add_theme_support( 'title-tag' );
+// Register custom menus and menu walkers
+require_once(get_template_directory().'/assets/functions/menu.php'); 
 
-	/*
-	 * Enable support for Post Thumbnails on posts and pages.
-	 *
-	 * @link https://developer.wordpress.org/themes/functionality/featured-images-post-thumbnails/
-	 */
-	add_theme_support( 'post-thumbnails' );
+// Register sidebars/widget areas
+require_once(get_template_directory().'/assets/functions/sidebar.php'); 
 
-	// This theme uses wp_nav_menu() in one location.
-	register_nav_menus( array(
-		'menu-1' => esc_html__( 'Primary', 'wp-dsa-cincy' ),
-	) );
+// Makes WordPress comments suck less
+require_once(get_template_directory().'/assets/functions/comments.php'); 
 
-	/*
-	 * Switch default core markup for search form, comment form, and comments
-	 * to output valid HTML5.
-	 */
-	add_theme_support( 'html5', array(
-		'search-form',
-		'comment-form',
-		'comment-list',
-		'gallery',
-		'caption',
-	) );
+// Replace 'older/newer' post links with numbered navigation
+require_once(get_template_directory().'/assets/functions/page-navi.php');
 
-	// Set up the WordPress core custom background feature.
-	add_theme_support( 'custom-background', apply_filters( 'wp_dsa_cincy_custom_background_args', array(
-		'default-color' => 'ffffff',
-		'default-image' => '',
-	) ) );
+// Adds support for multiple languages
+require_once(get_template_directory().'/assets/translation/translation.php'); 
 
-	// Add theme support for selective refresh for widgets.
-	add_theme_support( 'customize-selective-refresh-widgets' );
 
-	/**
-	 * Add support for core custom logo.
-	 *
-	 * @link https://codex.wordpress.org/Theme_Logo
-	 */
-	add_theme_support( 'custom-logo', array(
-		'height'      => 250,
-		'width'       => 250,
-		'flex-width'  => true,
-		'flex-height' => true,
-	) );
+/*****
+
+/* Define the custom box */
+add_action( 'add_meta_boxes', 'myplugin_add_custom_box' );
+
+/* Do something with the data entered */
+add_action( 'save_post', 'myplugin_save_postdata' );
+
+/* Adds a box to the main column on the Post and Page edit screens */
+function myplugin_add_custom_box() {
+  global $post;
+    if ( 'template-single-slide-one-column.php' == get_post_meta( $post->ID, '_wp_page_template', true ) ) {
+       		add_meta_box( 'wp_editor_test_1_box', 'Slide', 'wp_editor_meta_box_1' );
+  	}
+  	if ( 'template-single-slide-one-to-two-column.php' == get_post_meta( $post->ID, '_wp_page_template', true ) ) {
+       		add_meta_box( 'wp_editor_test_1_box', 'Slide', 'wp_editor_meta_box_1' );
+  			add_meta_box( 'wp_editor_test_3_box', 'DSA Left Column', 'wp_editor_meta_box_3' );
+  			add_meta_box( 'wp_editor_test_4_box', 'DSA Right Column', 'wp_editor_meta_box_4' );
+  	}
+    if ( 'template-homepage-2017.php' == get_post_meta( $post->ID, '_wp_page_template', true ) ) {
+          add_meta_box( 'wp_editor_test_8_box', 'DSA Feature Box', 'wp_editor_meta_box_8' );
+          add_meta_box( 'wp_editor_test_4_box', 'Column Right', 'wp_editor_meta_box_4' );
+          add_meta_box( 'wp_editor_test_11_box', 'DSA Alert Box', 'wp_editor_meta_box_11' );
+    }
+  	if ( 'template-fullwidth-to-two-column.php' == get_post_meta( $post->ID, '_wp_page_template', true ) ) {
+  			add_meta_box( 'wp_editor_test_3_box', 'DSA Left Column', 'wp_editor_meta_box_3' );
+  			add_meta_box( 'wp_editor_test_4_box', 'DSA Right Column', 'wp_editor_meta_box_4' );
+  	}
+  	if ( 'template-two-column.php' == get_post_meta( $post->ID, '_wp_page_template', true ) ) {
+  			add_meta_box( 'wp_editor_test_4_box', 'DSA Right Column', 'wp_editor_meta_box_4' );
+  	}
+    if ( 'template-three-slides-to-two-columns.php' == get_post_meta( $post->ID, '_wp_page_template', true ) ) {
+        add_meta_box( 'wp_editor_test_3_box', 'DSA Left Column', 'wp_editor_meta_box_3' );
+        add_meta_box( 'wp_editor_test_4_box', 'DSA Right Column', 'wp_editor_meta_box_4' );
+        add_meta_box( 'wp_editor_test_5_box', 'Slide 1', 'wp_editor_meta_box_5' );
+        add_meta_box( 'wp_editor_test_6_box', 'Slide 2', 'wp_editor_meta_box_6' );
+        add_meta_box( 'wp_editor_test_7_box', 'Slide 3', 'wp_editor_meta_box_7' );
+    }
 }
-endif;
-add_action( 'after_setup_theme', 'wp_dsa_cincy_setup' );
 
-/**
- * Set the content width in pixels, based on the theme's design and stylesheet.
- *
- * Priority 0 to make it available to lower priority callbacks.
- *
- * @global int $content_width
- */
-function wp_dsa_cincy_content_width() {
-	$GLOBALS['content_width'] = apply_filters( 'wp_dsa_cincy_content_width', 640 );
+/* Prints the box content */
+function wp_editor_meta_box_1( $post ) {
+
+  // Use nonce for verification
+  wp_nonce_field( plugin_basename( __FILE__ ), 'myplugin_noncename' );
+
+  $field_value = get_post_meta( $post->ID, '_dsa_slide0', false );
+  wp_editor( $field_value[0], '_dsa_slide0' );
+
 }
-add_action( 'after_setup_theme', 'wp_dsa_cincy_content_width', 0 );
 
-/**
- * Register widget area.
- *
- * @link https://developer.wordpress.org/themes/functionality/sidebars/#registering-a-sidebar
- */
-function wp_dsa_cincy_widgets_init() {
-	register_sidebar( array(
-		'name'          => esc_html__( 'Sidebar', 'wp-dsa-cincy' ),
-		'id'            => 'sidebar-1',
-		'description'   => esc_html__( 'Add widgets here.', 'wp-dsa-cincy' ),
-		'before_widget' => '<section id="%1$s" class="widget %2$s">',
-		'after_widget'  => '</section>',
-		'before_title'  => '<h2 class="widget-title">',
-		'after_title'   => '</h2>',
-	) );
+function wp_editor_meta_box_2( $post ) {
+
+  // Use nonce for verification
+  wp_nonce_field( plugin_basename( __FILE__ ), 'myplugin_noncename' );
+
+  $field_value = get_post_meta( $post->ID, '_dsa_slide_right', false );
+  wp_editor( $field_value[0], '_dsa_slide_right' );
 }
-add_action( 'widgets_init', 'wp_dsa_cincy_widgets_init' );
 
-/**
- * Enqueue scripts and styles.
- */
-function wp_dsa_cincy_scripts() {
-	wp_enqueue_style( 'wp-dsa-cincy-style', get_stylesheet_uri() );
+function wp_editor_meta_box_3( $post ) {
 
-	wp_enqueue_script( 'wp-dsa-cincy-navigation', get_template_directory_uri() . '/js/navigation.js', array(), '20151215', true );
+  // Use nonce for verification
+  wp_nonce_field( plugin_basename( __FILE__ ), 'myplugin_noncename' );
 
-	wp_enqueue_script( 'wp-dsa-cincy-skip-link-focus-fix', get_template_directory_uri() . '/js/skip-link-focus-fix.js', array(), '20151215', true );
-
-	if ( is_singular() && comments_open() && get_option( 'thread_comments' ) ) {
-		wp_enqueue_script( 'comment-reply' );
-	}
+  $field_value = get_post_meta( $post->ID, '_dsa_column_left', false );
+  wp_editor( $field_value[0], '_dsa_column_left' );
 }
-add_action( 'wp_enqueue_scripts', 'wp_dsa_cincy_scripts' );
 
-/**
- * Implement the Custom Header feature.
- */
-require get_template_directory() . '/inc/custom-header.php';
 
-/**
- * Custom template tags for this theme.
- */
-require get_template_directory() . '/inc/template-tags.php';
+function wp_editor_meta_box_4( $post ) {
 
-/**
- * Functions which enhance the theme by hooking into WordPress.
- */
-require get_template_directory() . '/inc/template-functions.php';
+  // Use nonce for verification
+  wp_nonce_field( plugin_basename( __FILE__ ), 'myplugin_noncename' );
 
-/**
- * Customizer additions.
- */
-require get_template_directory() . '/inc/customizer.php';
+  $field_value = get_post_meta( $post->ID, '_dsa_column_right', false );
+  wp_editor( $field_value[0], '_dsa_column_right' );
+}
 
-/**
- * Load Jetpack compatibility file.
- */
-require get_template_directory() . '/inc/jetpack.php';
+function wp_editor_meta_box_5( $post ) {
+
+  // Use nonce for verification
+  wp_nonce_field( plugin_basename( __FILE__ ), 'myplugin_noncename' );
+
+  $field_value = get_post_meta( $post->ID, '_dsa_slide1', false );
+  wp_editor( $field_value[0], '_dsa_slide1' );
+}
+
+function wp_editor_meta_box_6( $post ) {
+
+  // Use nonce for verification
+  wp_nonce_field( plugin_basename( __FILE__ ), 'myplugin_noncename' );
+
+  $field_value = get_post_meta( $post->ID, '_dsa_slide2', false );
+  wp_editor( $field_value[0], '_dsa_slide2' );
+}
+
+function wp_editor_meta_box_7( $post ) {
+
+  // Use nonce for verification
+  wp_nonce_field( plugin_basename( __FILE__ ), 'myplugin_noncename' );
+
+  $field_value = get_post_meta( $post->ID, '_dsa_slide3', false );
+  wp_editor( $field_value[0], '_dsa_slide3' );
+}
+
+function wp_editor_meta_box_8( $post ) {
+
+  // Use nonce for verification
+  wp_nonce_field( plugin_basename( __FILE__ ), 'myplugin_noncename' );
+
+  $field_value = get_post_meta( $post->ID, '_dsa_feature_box', false );
+  wp_editor( $field_value[0], '_dsa_feature_box' );
+}
+
+function wp_editor_meta_box_9( $post ) {
+
+  // Use nonce for verification
+  wp_nonce_field( plugin_basename( __FILE__ ), 'myplugin_noncename' );
+
+  $field_value = get_post_meta( $post->ID, '_dsa_homepage_row_2', false );
+  wp_editor( $field_value[0], '_dsa_homepage_row_2' );
+}
+
+function wp_editor_meta_box_10( $post ) {
+
+  // Use nonce for verification
+  wp_nonce_field( plugin_basename( __FILE__ ), 'myplugin_noncename' );
+
+  $field_value = get_post_meta( $post->ID, '_dsa_homepage_row_3', false );
+  wp_editor( $field_value[0], '_dsa_homepage_row_3' );
+}
+
+function wp_editor_meta_box_11( $post ) {
+
+  // Use nonce for verification
+  wp_nonce_field( plugin_basename( __FILE__ ), 'myplugin_noncename' );
+
+  $field_value = get_post_meta( $post->ID, '_dsa_alert_box', false );
+  wp_editor( $field_value[0], '_dsa_alert_box' );
+}
+
+
+/* When the post is saved, saves our custom data */
+function myplugin_save_postdata( $post_id ) {
+
+  // verify if this is an auto save routine. 
+  // If it is our form has not been submitted, so we dont want to do anything
+  if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) 
+      return;
+
+  // verify this came from the our screen and with proper authorization,
+  // because save_post can be triggered at other times
+  if ( ( isset ( $_POST['myplugin_noncename'] ) ) && ( ! wp_verify_nonce( $_POST['myplugin_noncename'], plugin_basename( __FILE__ ) ) ) )
+      return;
+
+  // Check permissions
+  if ( ( isset ( $_POST['post_type'] ) ) && ( 'page' == $_POST['post_type'] )  ) {
+    if ( ! current_user_can( 'edit_page', $post_id ) ) {
+      return;
+    }    
+  }
+  else {
+    if ( ! current_user_can( 'edit_post', $post_id ) ) {
+      return;
+    }
+  }
+
+  // OK, we're authenticated: we need to find and save the data
+	if ( isset ( $_POST['_dsa_slide0'] ) ) {
+    update_post_meta( $post_id, '_dsa_slide0', $_POST['_dsa_slide0'] );
+  }
+
+  if ( isset ( $_POST['_dsa_column_left'] ) ) {
+    update_post_meta( $post_id, '_dsa_column_left', $_POST['_dsa_column_left'] );
+  }
+
+  if ( isset ( $_POST['_dsa_column_right'] ) ) {
+    update_post_meta( $post_id, '_dsa_column_right', $_POST['_dsa_column_right'] );
+  }
+
+  if ( isset ( $_POST['_dsa_slide1'] ) ) {
+    update_post_meta( $post_id, '_dsa_slide1', $_POST['_dsa_slide1'] );
+  }
+
+  if ( isset ( $_POST['_dsa_slide2'] ) ) {
+    update_post_meta( $post_id, '_dsa_slide2', $_POST['_dsa_slide2'] );
+  }
+
+  if ( isset ( $_POST['_dsa_slide3'] ) ) {
+    update_post_meta( $post_id, '_dsa_slide3', $_POST['_dsa_slide3'] );
+  }
+  if ( isset ( $_POST['_dsa_feature_box'] ) ) {
+    update_post_meta( $post_id, '_dsa_feature_box', $_POST['_dsa_feature_box'] );
+  }
+   if ( isset ( $_POST['_dsa_homepage_row_2'] ) ) {
+    update_post_meta( $post_id, '_dsa_homepage_row_2', $_POST['_dsa_homepage_row_2'] );
+  }
+   if ( isset ( $_POST['_dsa_homepage_row_3'] ) ) {
+    update_post_meta( $post_id, '_dsa_homepage_row_3', $_POST['_dsa_homepage_row_3'] );
+  }
+   if ( isset ( $_POST['_dsa_alert_box'] ) ) {
+    update_post_meta( $post_id, '_dsa_alert_box', $_POST['_dsa_alert_box'] );
+  }
+
+}
+
+
+/*****
+
+
+
+// Remove 4.2 Emoji Support
+// require_once(get_template_directory().'/assets/functions/disable-emoji.php'); 
+
+// Adds site styles to the WordPress editor
+//require_once(get_template_directory().'/assets/functions/editor-styles.php'); 
+
+// Related post function - no need to rely on plugins
+// require_once(get_template_directory().'/assets/functions/related-posts.php'); 
+
+// Use this as a template for custom post types
+// require_once(get_template_directory().'/assets/functions/custom-post-type.php');
+
+// Customize the WordPress login menu
+// require_once(get_template_directory().'/assets/functions/login.php'); 
+
+// Customize the WordPress admin
+// require_once(get_template_directory().'/assets/functions/admin.php'); 

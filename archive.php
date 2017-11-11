@@ -1,51 +1,44 @@
-<?php
-/**
- * The template for displaying archive pages
- *
- * @link https://codex.wordpress.org/Template_Hierarchy
- *
- * @package WP_DSA_Cincy
- */
+<?php get_header(); ?>
+			
+	<div id="content">
+	
+		<div id="inner-content" class="row">
+		
+		    <main id="main" class="large-12 medium-12 columns" role="main">
+			    
+		    	<header class="archive-header-card">
+		    		<h1 class="page-title"> <?php single_term_title(); ?> </h1>
+					<?php the_archive_description('<div class="taxonomy-description">', '</div>');?>
+		    	
+			    	<div class="button-group expanded"><!-- Chapter and Category Specific Subnavigation -->
+						<a href="http://seattledsa.org/dispatches/" class="button">All</a>
+						<a href="http://seattledsa.org/dispatches/actions/" class="button">Actions</a>
+						<a href="http://seattledsa.org/dispatches/education/" class="button">Education</a>
+						<a href="http://seattledsa.org/dispatches/minutes/" class="button">Minutes</a>
+					</div>
+				</header>
+				<hr />
+		    	<?php if (have_posts()) : while (have_posts()) : the_post(); ?>
+			 
+					<!-- To see additional archive styles, visit the /parts directory -->
+					<?php get_template_part( 'parts/loop', 'archive' ); ?>
+				    
+				<?php endwhile; ?>	
 
-get_header(); ?>
+					<?php joints_page_navi(); ?>
+					
+				<?php else : ?>
+											
+					<?php get_template_part( 'parts/content', 'missing' ); ?>
+						
+				<?php endif; ?>
+		
+			</main> <!-- end #main -->
+	
+			<!-- <?php get_sidebar(); ?> -->
+	    
+	    </div> <!-- end #inner-content -->
+	    
+	</div> <!-- end #content -->
 
-	<div id="primary" class="content-area">
-		<main id="main" class="site-main">
-
-		<?php
-		if ( have_posts() ) : ?>
-
-			<header class="page-header">
-				<?php
-					the_archive_title( '<h1 class="page-title">', '</h1>' );
-					the_archive_description( '<div class="archive-description">', '</div>' );
-				?>
-			</header><!-- .page-header -->
-
-			<?php
-			/* Start the Loop */
-			while ( have_posts() ) : the_post();
-
-				/*
-				 * Include the Post-Format-specific template for the content.
-				 * If you want to override this in a child theme, then include a file
-				 * called content-___.php (where ___ is the Post Format name) and that will be used instead.
-				 */
-				get_template_part( 'template-parts/content', get_post_format() );
-
-			endwhile;
-
-			the_posts_navigation();
-
-		else :
-
-			get_template_part( 'template-parts/content', 'none' );
-
-		endif; ?>
-
-		</main><!-- #main -->
-	</div><!-- #primary -->
-
-<?php
-get_sidebar();
-get_footer();
+<?php get_footer(); ?>

@@ -1,60 +1,31 @@
-<?php
-/**
- * The template for displaying 404 pages (not found)
- *
- * @link https://codex.wordpress.org/Creating_an_Error_404_Page
- *
- * @package WP_DSA_Cincy
- */
+<?php get_header(); ?>
+			
+	<div id="content">
 
-get_header(); ?>
+		<div id="inner-content" class="row">
+	
+			<main id="main" class="large-8 medium-8 columns" role="main">
 
-	<div id="primary" class="content-area">
-		<main id="main" class="site-main">
+				<article id="content-not-found">
+				
+					<header class="article-header">
+						<h1><?php _e( '404 Error, Comrade - Article Not Found &/or Expropriated by Bourgeoisie', 'jointswp' ); ?></h1>
+					</header> <!-- end article header -->
+			
+					<section class="entry-content">
+						<p><?php _e( 'The article you were looking for was not found, but maybe try looking again!', 'jointswp' ); ?></p>
+					</section> <!-- end article section -->
 
-			<section class="error-404 not-found">
-				<header class="page-header">
-					<h1 class="page-title"><?php esc_html_e( 'Oops! That page can&rsquo;t be found.', 'wp-dsa-cincy' ); ?></h1>
-				</header><!-- .page-header -->
+					<section class="search">
+					    <p><?php get_search_form(); ?></p>
+					</section> <!-- end search section -->
+			
+				</article> <!-- end article -->
+	
+			</main> <!-- end #main -->
 
-				<div class="page-content">
-					<p><?php esc_html_e( 'It looks like nothing was found at this location. Maybe try one of the links below or a search?', 'wp-dsa-cincy' ); ?></p>
+		</div> <!-- end #inner-content -->
 
-					<?php
-						get_search_form();
+	</div> <!-- end #content -->
 
-						the_widget( 'WP_Widget_Recent_Posts' );
-					?>
-
-					<div class="widget widget_categories">
-						<h2 class="widget-title"><?php esc_html_e( 'Most Used Categories', 'wp-dsa-cincy' ); ?></h2>
-						<ul>
-						<?php
-							wp_list_categories( array(
-								'orderby'    => 'count',
-								'order'      => 'DESC',
-								'show_count' => 1,
-								'title_li'   => '',
-								'number'     => 10,
-							) );
-						?>
-						</ul>
-					</div><!-- .widget -->
-
-					<?php
-
-						/* translators: %1$s: smiley */
-						$archive_content = '<p>' . sprintf( esc_html__( 'Try looking in the monthly archives. %1$s', 'wp-dsa-cincy' ), convert_smilies( ':)' ) ) . '</p>';
-						the_widget( 'WP_Widget_Archives', 'dropdown=1', "after_title=</h2>$archive_content" );
-
-						the_widget( 'WP_Widget_Tag_Cloud' );
-					?>
-
-				</div><!-- .page-content -->
-			</section><!-- .error-404 -->
-
-		</main><!-- #main -->
-	</div><!-- #primary -->
-
-<?php
-get_footer();
+<?php get_footer(); ?>

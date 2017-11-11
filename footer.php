@@ -1,34 +1,22 @@
-<?php
-/**
- * The template for displaying the footer
- *
- * Contains the closing of the #content div and all content after.
- *
- * @link https://developer.wordpress.org/themes/basics/template-files/#template-partials
- *
- * @package WP_DSA_Cincy
- */
-
-?>
-
-	</div><!-- #content -->
-
-	<footer id="colophon" class="site-footer">
-		<div class="site-info">
-			<a href="<?php echo esc_url( __( 'https://wordpress.org/', 'wp-dsa-cincy' ) ); ?>"><?php
-				/* translators: %s: CMS name, i.e. WordPress. */
-				printf( esc_html__( 'Proudly powered by %s', 'wp-dsa-cincy' ), 'WordPress' );
-			?></a>
-			<span class="sep"> | </span>
-			<?php
-				/* translators: 1: Theme name, 2: Theme author. */
-				printf( esc_html__( 'Theme: %1$s by %2$s.', 'wp-dsa-cincy' ), 'wp-dsa-cincy', '<a href="https://automattic.com/">Sean Crowe</a>' );
-			?>
-		</div><!-- .site-info -->
-	</footer><!-- #colophon -->
-</div><!-- #page -->
-
-<?php wp_footer(); ?>
-
-</body>
-</html>
+				<footer class="footer padding-top" role="contentinfo">
+					<div id="dsa-footer" class="row">
+						<?php get_sidebar('dsa1of3'); ?>
+						<?php get_sidebar('dsa2of3'); ?>
+						<?php get_sidebar('dsa3of3'); ?>
+					</div><!-- end #dsaFooter-content widgets -->
+					<div id="inner-footer" class="row">
+						<div class="large-12 medium-12 columns">
+							<nav role="navigation">
+	    						<?php joints_footer_links(); ?>
+	    					</nav>
+	    				</div>
+						<div class="large-12 medium-12 columns">
+							<p class="source-org copyright">&copy; <?php echo date('Y'); ?> <?php bloginfo('name'); ?>.</p>
+						</div>
+					</div> <!-- end #inner-footer -->
+				</footer> <!-- end .footer -->
+			</div>  <!-- end .main-content -->
+		</div> <!-- end .off-canvas-wrapper -->
+		<?php wp_footer(); ?>
+	</body>
+</html> <!-- end page -->
